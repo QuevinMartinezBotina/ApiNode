@@ -76,10 +76,12 @@ const usuariosDelete = async (req, res = response) => {
 
   //?Deshabilitar usuario peor no borrarlo pro si hay registros vinculados
   const usuario = await Usuario.findByIdAndUpdate(id, { estado: false });
+  const usuarioAutenticado = req.usuario;
 
   res.json({
-    msg: "Usuario eliminado con existo!",
+    msg: "Usuario deshabilitado, estado: false",
     usuario,
+    usuarioAutenticado,
   });
 };
 

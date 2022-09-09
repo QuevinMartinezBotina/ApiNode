@@ -32,7 +32,10 @@
       //* Google Token: ID_TOKEN
       /* console.log(response.credential); */
 
-      fetch('http://localhost:8080/api/auth/google', {
+      let url = (window.location.hostname.includes('localhost')) ? 'http://localhost:8080/api/auth/google' :
+        'https://apinodequevin.herokuapp.com/api/auth/google';
+
+      fetch(url, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'

@@ -1,6 +1,7 @@
 const Categoria = require("../models/categoria");
 
 const existeCategoriaPorId = async (id) => {
+  /* Checking if the id exists in the database. */
   const existeCategoria = await Categoria.findById(id);
 
   if (!existeCategoria) {

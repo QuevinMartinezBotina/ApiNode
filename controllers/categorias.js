@@ -8,8 +8,7 @@ const obtenerCategorias = async (req = request, res = response) => {
 
   const [total, categorias] = await Promise.all([
     Categoria.countDocuments(query),
-    Categoria
-      .find(query)
+    Categoria.find(query)
       .skip(Number(desde))
       .limit(Number(limite))
       .populate("usuario", "nombre"), //* Populating the user id with the user name
@@ -31,6 +30,37 @@ const obtenerCategoria = async (req = request, res = response) => {
   return res.json({
     ok: true,
     categoria,
+  });
+};
+
+//* Crear una nueva categoria
+const crearCategoria = async (req, res = response) => {
+  const nombre = req.body.nombre.toUpperCase();
+
+  const categoriaDB = await categoria.findOne({ nombre });
+
+  /* Checking if the category already exists. */
+  if (categoriaDB) {
+    return res.status(400).json({
+      ok: false,
+      msg: `La categoria ${categoriaDB.nombre} ya existe`,
+    });
+  }
+
+  /* Creating an object with the name of the category and the user id. */
+  const data = {
+    nombre,
+    usuario: req.usuario._id,
+  };
+
+  const categoriaNueva = new categoria(data);
+
+  await categoriaNueva.save();
+
+  return res.json({
+    ok: true,
+    msg: "Categoria creada correctamente",
+    categoriaNueva,
   });
 };
 
@@ -76,36 +106,6 @@ const eliminarCategoria = async (req = request, res = response) => {
     ok: true,
     msg: "Categoria deshabilitada correctamente",
     categoriaDB,
-  });
-};
-
-const crearCategoria = async (req, res = response) => {
-  const nombre = req.body.nombre.toUpperCase();
-
-  const categoriaDB = await categoria.findOne({ nombre });
-
-  /* Checking if the category already exists. */
-  if (categoriaDB) {
-    return res.status(400).json({
-      ok: false,
-      msg: `La categoria ${categoriaDB.nombre} ya existe`,
-    });
-  }
-
-  /* Creating an object with the name of the category and the user id. */
-  const data = {
-    nombre,
-    usuario: req.usuario._id,
-  };
-
-  const categoriaNueva = new categoria(data);
-
-  await categoriaNueva.save();
-
-  return res.json({
-    ok: true,
-    msg: "Categoria creada correctamente",
-    categoriaNueva,
   });
 };
 

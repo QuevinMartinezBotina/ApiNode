@@ -11,6 +11,7 @@ const { existeCategoriaPorId } = require("../helpers/categoria-existe");
 
 const { validarCampos } = require("../middlewares/validar-campos");
 const { validarJWT } = require("../middlewares/validar-jwt");
+const { esAdminRol } = require("../middlewares/validar-rol");
 
 const router = Router();
 
@@ -29,6 +30,7 @@ router.post(
   "/",
   [
     validarJWT,
+    esAdminRol,
     check("nombre", "El nombre de la categoria es obligatorio").not().isEmpty(),
     validarCampos,
   ],

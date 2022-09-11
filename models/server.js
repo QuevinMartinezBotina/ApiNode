@@ -7,8 +7,13 @@ class Server {
     this.app = express();
     this.port = process.env.PORT;
 
-    this.usuariosPath = "/api/usuarios";
-    this.authPath = "/api/auth";
+    
+    /* Defining the routes of the application. */
+    this.paths = {
+      authPath: "/api/auth",
+      categoriasPath: "/api/categorias",
+      usuariosPath: "/api/usuarios",
+    };
 
     // conecction DB
     this.conecctionDB();
@@ -35,9 +40,13 @@ class Server {
     this.app.use(express.static("public"));
   }
 
+  /**
+   * This function is used to define the routes of the application
+   */
   routes() {
-    this.app.use(this.authPath, require("../routes/auth"));
-    this.app.use(this.usuariosPath, require("../routes/usuarios"));
+    this.app.use(this.paths.authPath, require("../routes/auth"));
+    this.app.use(this.paths.categoriasPath, require("../routes/categorias"));
+    this.app.use(this.paths.usuariosPath, require("../routes/usuarios"));
   }
 
   listen() {

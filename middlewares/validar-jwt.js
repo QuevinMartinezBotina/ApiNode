@@ -33,6 +33,7 @@ const validarJWT = async (req = request, res = response, next) => {
       });
     }
 
+    //*Si todo esta bien, se le asigna el usuario a la request, esta se puede usar en cualquier parte del codigo
     req.usuario = usuario;
 
     console.log(`El token de usuario para al ruta es: ${token}`);

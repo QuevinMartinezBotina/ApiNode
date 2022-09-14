@@ -81,15 +81,16 @@ const actualizarProducto = async (req, res = response) => {
 
   const { ...data } = req.body;
 
-  const productoActualizado = await Producto.findByIdAndUpdate(
-    id,
-    { data },
-    { new: true }
-  );
+  /* Assigning the user id to the data object. */
+  data.usuario = req.usuario._id;
+
+  /* Creating an object with the same name as the variables. */
+  const productoActualizado = await Producto.findByIdAndUpdate(id, data);
 
   return res.json({
     estado: true,
     msg: "Producto actualizado",
+    data,
   });
 };
 

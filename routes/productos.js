@@ -67,10 +67,10 @@ router.put(
     check("nombre").custom(existeProductoPorNombre),
 
     //*campos relacionados a otra tabla
-    check("categoria", "Categoria no es un ID valido").isMongoId(),
-    check("categoria").custom(existeCategoriaPorId),
-    check("usuario", "Usuario es requerido").not().isEmpty(),
-    check("usuario").custom(existeUsuarioPorId),
+    check("categoria", "Categoria no es un ID valido").optional().isMongoId(),
+    check("categoria").optional().custom(existeCategoriaPorId),
+    check("usuario", "Usuario es requerido").optional().not().isEmpty(),
+    check("usuario").optional().custom(existeUsuarioPorId),
 
     validarCampos,
   ],

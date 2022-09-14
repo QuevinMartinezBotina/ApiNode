@@ -1,5 +1,6 @@
 const Role = require("../models/role");
 const Usuario = require("../models/usuario");
+const Producto = require("../models/producto");
 
 //? Validar si el rol esta en DB
 const esRolevalido = async (rol = "") => {
@@ -26,8 +27,19 @@ const existeUsuarioPorId = async (id) => {
   }
 };
 
+const existeProductoPorNombre = async (nombre) => {
+  const productos = await Producto.find();
+
+  productos.forEach((element) => {
+    if (element.nombre.toUpperCase() == nombre.toUpperCase()) {
+      throw new Error(`El producto ${nombre} ya existe en la DB!`);
+    }
+  });
+};
+
 module.exports = {
   esRolevalido,
   emailExiste,
   existeUsuarioPorId,
+  existeProductoPorNombre,
 };

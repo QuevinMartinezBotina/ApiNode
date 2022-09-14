@@ -12,7 +12,9 @@ class Server {
     this.paths = {
       authPath: "/api/auth",
       categoriasPath: "/api/categorias",
+      productosPath: "/api/productos",
       usuariosPath: "/api/usuarios",
+
     };
 
     // conecction DB
@@ -46,6 +48,7 @@ class Server {
   routes() {
     this.app.use(this.paths.authPath, require("../routes/auth"));
     this.app.use(this.paths.categoriasPath, require("../routes/categorias"));
+    this.app.use(this.paths.productosPath, require("../routes/productos"));
     this.app.use(this.paths.usuariosPath, require("../routes/usuarios"));
   }
 

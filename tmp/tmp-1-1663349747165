@@ -1,0 +1,11 @@
+style="font-weight: normal !important;"
+
+2554
+viewAlertsTraduction.ayuda[0], viewAlertsTraduction.ayuda[1],
+viewAlertsTraduction = sweetAlert.es
+
+
+
+1. En ayuda.html es el mismo mensaje en todo "Debes rellenar todos los campos!"
+	- revisar 200 alert success de modal helper
+

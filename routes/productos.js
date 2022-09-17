@@ -50,8 +50,8 @@ router.post(
     check("categoria", "Categoria es requerida").not().isEmpty(),
     check("categoria", "Categoria no es un ID valido").isMongoId(),
     check("categoria").custom(existeCategoriaPorId),
-    check("usuario", "Usuario es requerido").not().isEmpty(),
-    check("usuario").custom(existeUsuarioPorId),
+    check("usuario", "Usuario es requerido").optional().not().isEmpty(),
+    check("usuario").optional().custom(existeUsuarioPorId),
     validarCampos,
   ],
   crearProducto

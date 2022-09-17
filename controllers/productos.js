@@ -46,13 +46,13 @@ const obtenerProducto = async (req = request, res = response) => {
 
 //* Para CREAR un nuevo producto - privado - se requiere un token valido
 const crearProducto = async (req, res = response) => {
+ 
   const {
     nombre,
     estado,
     precio,
     descripcion,
     disponible,
-    usuario,
     categoria,
   } = req.body;
 
@@ -63,7 +63,7 @@ const crearProducto = async (req, res = response) => {
     precio,
     descripcion,
     disponible,
-    usuario,
+    usuario: req.usuario._id,
     categoria,
   };
 

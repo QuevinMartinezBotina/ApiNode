@@ -10,13 +10,27 @@ const usuariosGet = async (req = request, res = response) => {
   //? Aqui ejecutamso con promesas dos consultas para hacerlo mas rapido y simultaneo
   const [total, usuarios] = await Promise.all([
     Usuario.countDocuments(query),
-    Usuario.find(query).skip(Number(desde)).limit(Number(limite)),
+    Usuario.find().skip(Number(desde)).limit(Number(limite)),
   ]);
 
   res.json({
+    status: true,
     total,
     usuarios,
   });
+};
+
+const usuarioGetById = async (req, res = response) => {
+  const { id } = req.params;
+  const usuario = await Usuario.findById(id);
+
+  return res.json(
+    {
+      status: true,
+      usuario,
+    },
+    200
+  );
 };
 
 const usuariosPost = async (req, res = response) => {
@@ -39,14 +53,32 @@ const usuariosPost = async (req, res = response) => {
   await usuario.save();
 
   res.json({
-    msg: "post API - usuariosPost",
+    status: true,
+    msg: "Usuario creado",
     usuario,
   });
 };
 
 const usuariosPut = async (req, res = response) => {
   const { id } = req.params;
-  const { _id, password, google, correo, ...resto } = req.body;
+  const { _id, password, google, estado, ...resto } = req.body;
+
+  if (estado) {
+    const estadoUsario = await Usuario.findByIdAndUpdate(id, {
+      estado: estado,
+    });
+    return res.json(
+      {
+        status: true,
+        msg: `Usuario actualizado`,
+        estado,
+        estadoUsario,
+        id,
+        estado,
+      },
+      200
+    );
+  }
 
   //* Validar contra DB
   if (password) {
@@ -57,7 +89,8 @@ const usuariosPut = async (req, res = response) => {
   const usuario = await Usuario.findByIdAndUpdate(id, resto);
 
   res.json({
-    msg: "put API - usuariosPut",
+    status: true,
+    msg: "Usuario actualizado",
     usuario,
   });
 };
@@ -69,17 +102,18 @@ const usuariosPatch = (req, res = response) => {
 };
 
 const usuariosDelete = async (req, res = response) => {
-  const { id } = req.params;
+  const { id, estado } = req.params;
 
   //?Borrar fisicamente
   //const usuario = await Usuario.findByIdAndDelete(id);
 
   //?Deshabilitar usuario peor no borrarlo pro si hay registros vinculados
-  const usuario = await Usuario.findByIdAndUpdate(id, { estado: false });
+  const usuario = await Usuario.findByIdAndUpdate(id, { estado: estado });
   const usuarioAutenticado = req.usuario;
 
-  res.json({
-    msg: "Usuario deshabilitado, estado: false",
+  return res.json({
+    status: true,
+    msg: "Usuario actualizado",
     usuario,
     usuarioAutenticado,
   });
@@ -91,4 +125,5 @@ module.exports = {
   usuariosPut,
   usuariosPatch,
   usuariosDelete,
+  usuarioGetById,
 };

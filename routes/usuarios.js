@@ -15,6 +15,7 @@ const {
   usuariosPost,
   usuariosDelete,
   usuariosPatch,
+  usuarioGetById,
 } = require("../controllers/usuarios");
 
 const {
@@ -27,12 +28,24 @@ const router = Router();
 
 router.get("/", usuariosGet);
 
+router.get(
+  "/:id",
+  [
+    check("id", "No es un ID válido").isMongoId(),
+    check("id").custom(existeUsuarioPorId),
+    validarJWT,
+    validarCampos,
+  ],
+  usuarioGetById
+);
+
 router.put(
   "/:id",
   [
-    check("id", "No es un ID valido!").isMongoId(),
+    check("id", "No es un id valido").isMongoId(),
     check("id").custom(existeUsuarioPorId),
-    check("rol").custom(esRolevalido),
+    check("correo", "Revisa el correo").optional().isEmail(),
+    check("rol").optional().custom(esRolevalido),
 
     validarCampos,
   ],
@@ -43,16 +56,16 @@ router.post(
   "/",
   [
     //? Aqui validamos que todos lo campos vengan correctos y se 'guardan errores'
-    check("nombre", "Nombre es requerido!").not().isEmpty(),
+    check("nombre", "Nombre es requerido").not().isEmpty(),
     check(
       "password",
-      "Password es requerido, debe ser mayor a 6 caracteres!"
+      "Password es requerido, debe ser mayor a 6 caracteres"
     ).isLength({ min: 6 }),
     check("correo", "Email no valido!").isEmail(),
     check("correo").custom(emailExiste),
 
     //check("rol", "Rol no existe!").isIn(["ADMIN_ROLE", "USER_ROLE"]),
-    check("rol").custom(esRolevalido),
+    check("rol").optional().custom(esRolevalido),
     //?Mostramos errores si existen en algun punto
     validarCampos,
   ],
@@ -60,7 +73,7 @@ router.post(
 );
 
 router.delete(
-  "/:id",
+  "/:id/:estado",
   [
     validarJWT,
     esAdminRol,

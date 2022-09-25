@@ -15,7 +15,9 @@ const cargarArchivo = async (req, res = response) => {
     const archivo = await subirArchivo(req.files, undefined, "imgs");
 
     res.json({
-      msg: archivo,
+      //status: true,
+      archivo: archivo,
+      msg: "Archivo cargado correctamente",
     });
   } catch (error) {
     res.status(400).json({
@@ -97,6 +99,7 @@ const actualizarImagenCloudinary = async (req, res = response) => {
       modelo = await Usuario.findById(id);
       if (!modelo) {
         return res.status(400).json({
+          status: false,
           msg: `No existe un usuario con el id ${id}`,
         });
       }
@@ -106,6 +109,7 @@ const actualizarImagenCloudinary = async (req, res = response) => {
       modelo = await Producto.findById(id);
       if (!modelo) {
         return res.status(400).json({
+          status: false,
           msg: `No existe un producto con el id ${id}`,
         });
       }
@@ -135,7 +139,11 @@ const actualizarImagenCloudinary = async (req, res = response) => {
   modelo.img = secure_url;
   await modelo.save();
 
-  return res.json(req.files.archivo);
+  return res.json({
+    status: true,
+    msg: "Archivo cargado correctamente",
+    archivo: req.files.archivo,
+  });
 };
 
 const mostrarImagen = async (req, res = response) => {

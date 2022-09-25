@@ -4,6 +4,7 @@ const usuario = require("../models/usuario");
 const esAdminRol = (req, res = response, next) => {
   if (!req.usuario) {
     return res.status(500).json({
+      status: false,
       msg: "Se quiere verificar el rol sin validar el token primero",
     });
   }
@@ -13,6 +14,7 @@ const esAdminRol = (req, res = response, next) => {
 
   if (rol !== "ADMIN_ROLE") {
     return res.status(401).json({
+      status: false,
       msg: `${nombre} no tiene el rol de: Administrador - no puede hacer esto`,
     });
   }

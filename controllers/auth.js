@@ -12,6 +12,7 @@ const login = async (req, res = response) => {
     const usuario = await Usuario.findOne({ correo });
     if (!usuario) {
       return res.status(400).json({
+        status: false,
         msg: "usuario/contraseña incorrectos!",
       });
     }
@@ -19,7 +20,8 @@ const login = async (req, res = response) => {
     //*Si el usuario está activo
     if (!usuario.estado) {
       return res.status(400).json({
-        msg: "El usuario no está habilitado, estado: false",
+        status: false,
+        msg: "El usuario no está habilitado",
       });
     }
 
@@ -28,6 +30,7 @@ const login = async (req, res = response) => {
 
     if (!validPassword) {
       return res.status(400).json({
+        status: false,
         msg: "La contraseña es incorrecta!",
       });
     }
@@ -37,7 +40,8 @@ const login = async (req, res = response) => {
 
     //*Respuesta d elogin correcto
     res.json({
-      msg: `Login ok!`,
+      status: true,
+      msg: `login correcto!`,
       usuario,
       token,
     });
@@ -65,7 +69,7 @@ const googleSignIn = async (req, res = response) => {
         img,
         correo,
         password: ":)",
-        google: true
+        google: true,
       });
 
       //*Guardar usuario en DB
@@ -86,7 +90,7 @@ const googleSignIn = async (req, res = response) => {
       message: "Todo bien",
       id_token,
       nombre,
-      correo
+      correo,
     });
   } catch (error) {
     console.log(error);

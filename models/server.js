@@ -16,6 +16,7 @@ class Server {
       productosPath: "/api/productos",
       usuariosPath: "/api/usuarios",
       uploadsPath: "/api/uploads",
+      rolesPath: "/api/roles",
     };
 
     // conecction DB
@@ -62,6 +63,7 @@ class Server {
     this.app.use(this.paths.productosPath, require("../routes/productos"));
     this.app.use(this.paths.usuariosPath, require("../routes/usuarios"));
     this.app.use(this.paths.uploadsPath, require("../routes/uploads"));
+    this.app.use(this.paths.rolesPath, require("../routes/roles"));
   }
 
   listen() {

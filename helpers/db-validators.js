@@ -1,6 +1,7 @@
 const Role = require("../models/role");
 const Usuario = require("../models/usuario");
 const Producto = require("../models/producto");
+const { json } = require("express");
 
 //? Validar si el rol esta en DB
 const esRolevalido = async (rol = "") => {
@@ -15,7 +16,7 @@ const emailExiste = async (correo = "") => {
   const existeEmail = await Usuario.findOne({ correo });
 
   if (existeEmail) {
-    throw new Error(`El correo ${correo} esta registrado  en la DB!`);
+    throw new Error(`El correo ${correo} esta registrado  en la DB`);
   }
 };
 

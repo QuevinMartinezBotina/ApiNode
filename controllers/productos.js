@@ -20,6 +20,7 @@ const obtenerProductos = async (req = request, res = response) => {
   ]);
 
   return res.json({
+    status: true,
     total,
     productos,
   });
@@ -40,21 +41,16 @@ const obtenerProducto = async (req = request, res = response) => {
   }
 
   return res.json({
-    productoDB,
+    status: true,
+    msg: "Producto encontrado",
+    producto: productoDB,
   });
 };
 
 //* Para CREAR un nuevo producto - privado - se requiere un token valido
 const crearProducto = async (req, res = response) => {
- 
-  const {
-    nombre,
-    estado,
-    precio,
-    descripcion,
-    disponible,
-    categoria,
-  } = req.body;
+  const { nombre, estado, precio, descripcion, disponible, categoria } =
+    req.body;
 
   /* Creating an object with the same name as the variables. */
   const data = {
@@ -88,7 +84,7 @@ const actualizarProducto = async (req, res = response) => {
   const productoActualizado = await Producto.findByIdAndUpdate(id, data);
 
   return res.json({
-    estado: true,
+    status: true,
     msg: "Producto actualizado",
     data,
   });
@@ -96,12 +92,13 @@ const actualizarProducto = async (req, res = response) => {
 
 //* Para ELIMINAR un producto - Admin - se requiere un token valido
 const borrarProducto = async (req, res = response) => {
-  const { id } = req.params;
+  const { id, estado } = req.params;
 
-  const productoDB = await Producto.findByIdAndUpdate(id, { estado: false });
+  const productoDB = await Producto.findByIdAndUpdate(id, { disponible: estado });
 
   return res.json({
-    msg: "Producto eliminado",
+    status: true,
+    msg: "Estado del producto actualizado",
     productoDB,
   });
 };

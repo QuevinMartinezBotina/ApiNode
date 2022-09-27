@@ -79,7 +79,7 @@ router.put(
 
 //* Para ELIMINAR un producto - Admin - se requiere un token valido
 router.delete(
-  "/:id",
+  "/:id/:estado",
   [
     validarJWT,
     check("id", "Id es es requerido").not().isEmpty(),

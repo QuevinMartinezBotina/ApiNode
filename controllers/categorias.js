@@ -15,7 +15,7 @@ const obtenerCategorias = async (req = request, res = response) => {
   ]);
 
   return res.json({
-    ok: true,
+    status: true,
     total,
     categorias,
   });

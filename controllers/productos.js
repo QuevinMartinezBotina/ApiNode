@@ -68,7 +68,11 @@ const crearProducto = async (req, res = response) => {
   //* Guardar en DB
   await nuevoProducto.save();
 
-  return res.status(201).json(nuevoProducto);
+  return res.status(201).json({
+    status: true,
+    msg: "Producto creado",
+    nuevoProducto,
+  });
 };
 
 //* Para ACTUALIZAR un producto - privado - se requiere un token valido
@@ -94,7 +98,9 @@ const actualizarProducto = async (req, res = response) => {
 const borrarProducto = async (req, res = response) => {
   const { id, estado } = req.params;
 
-  const productoDB = await Producto.findByIdAndUpdate(id, { disponible: estado });
+  const productoDB = await Producto.findByIdAndUpdate(id, {
+    disponible: estado,
+  });
 
   return res.json({
     status: true,
